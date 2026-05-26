@@ -1,53 +1,22 @@
-// Loader
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.querySelector('.loader').classList.add('hidden');
-  }, 800);
-});
-
-// Navbar
-const nav = document.querySelector('.nav');
+// Navbar scroll
+const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 60);
+  nav.classList.toggle('scrolled', window.scrollY > 50);
 });
 
-// Mobile menu
-const toggle = document.querySelector('.nav-toggle');
-const links = document.querySelector('.nav-links');
-toggle.addEventListener('click', () => {
-  links.classList.toggle('active');
-  toggle.classList.toggle('active');
-});
-document.querySelectorAll('.nav-links a').forEach(a => {
-  a.addEventListener('click', () => {
-    links.classList.remove('active');
-    toggle.classList.remove('active');
-  });
-});
-
-// Scroll reveal
+// Reveal on scroll
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
     }
   });
-}, { threshold: 0.15 });
+}, { threshold: 0.1 });
 
-document.querySelectorAll('.work-card, .skill-item, .astat').forEach(el => {
-  el.classList.add('reveal');
+document.querySelectorAll('.work-item, .gallery-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'all 0.8s cubic-bezier(0.25,0.8,0.25,1)';
   observer.observe(el);
-});
-
-// Smooth nav highlight
-const sections = document.querySelectorAll('section[id]');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(s => {
-    if (window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id');
-  });
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
-  });
 });
